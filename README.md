@@ -20,28 +20,28 @@ If -d flag is passed, script must print additional information:<br>
 
 
 <h3>TASK 3</h3>
-You need to write a script that prints the numbers from 1 to 100 such that:
-    * If the number is a multiple of 3, you need to print "Fizz" instead of that number.
-    * If the number is a multiple of 5, you need to print "Buzz" instead of that number.
-    * If the number is a multiple of both 3 and 5, you need to print "FizzBuzz" instead of that number.
+You need to write a script that prints the numbers from 1 to 100 such that:<br>
+    - If the number is a multiple of 3, you need to print "Fizz" instead of that number.<br>
+    - If the number is a multiple of 5, you need to print "Buzz" instead of that number.<br>
+    - If the number is a multiple of both 3 and 5, you need to print "FizzBuzz" instead of that number.<br>
 
 <h3>TASK 5</h3>
-Write script with following functionality:
-    * If -v tag is passed, replaces lowercase characters with uppercase and vise versa
-    * If -s is passed, script substitutes <A_WORD> with <B_WORD> in text (case sensitive)
-    * If -r is passed, script reverses text lines
-    * If -l is passed, script converts all the text to lower case
-    * If -u is passed, script converts all the text to upper case
-    * Script should work with -i <input file> -o <output file> tags
+Write script with following functionality:<br>
+    - If -v tag is passed, replaces lowercase characters with uppercase and vise versa<br>
+    - If -s is passed, script substitutes <A_WORD> with <B_WORD> in text (case sensitive)<br>
+    - If -r is passed, script reverses text lines<br>
+    - If -l is passed, script converts all the text to lower case<br>
+    - If -u is passed, script converts all the text to upper case<br>
+    - Script should work with -i <input file> -o <output file> tags<br>
 
 <h3>TASK 6</h3>
-Create script, that generates report file with following information:
-    * current date and time;
-    * name of current user;
-    * internal IP address and hostname;
-    * external IP address;
-    * name and version of Linux distribution;
-    * system uptime;
-    * information about used and free space in / in GB;
-    * information about total and free RAM;
-    * number and frequency of CPU cores
+Create script, that generates report file with following information:<br>
+    - current date and time;<br>
+    - name of current user;<br>
+    - internal IP address and hostname;<br>
+    - external IP address;<br>
+    - name and version of Linux distribution;<br>
+    - system uptime;<br>
+    - information about used and free space in / in GB;<br>
+    - information about total and free RAM;<br>
+    - number and frequency of CPU cores
