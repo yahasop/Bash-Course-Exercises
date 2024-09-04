@@ -1,0 +1,37 @@
+#!/bin/bash
+
+#This prints out a N positions of the Fibonacci sequence
+ 
+fibonacci() {
+	#First reads from stdin how many poistion we want to print
+	read -p "Enter a fibonacci sequence position: " position
+	
+	#Variable initialization
+	a=0
+	b=1
+	
+	#Constraints:
+	# - If n = 0, return 0
+	# - If n = 1, return 1
+	#The calls itself to try again	
+	if [ "$position" == "0" ]; then
+		echo "0"
+		fibonacci
+	elif [ "$position" == "1" ]; then
+		echo "1"
+		fibonacci	
+	#Fibonacci logic
+	elif [ "$position" -gt "1" ]; then
+		echo ""
+		echo "Fibonacci sequence until position $position is:"
+		#Iterates fixed  N times
+		for (( i=0; i<position; i++ )); do
+			echo "$a" #Starts at 0
+			fibonacci_operation=$((a + b)) #Addition of numbers
+			a=$b #Number a is now the b in the previous operation
+			b=$fibonacci_operation #Result of numbers turns b
+		done
+	fi
+}
+
+fibonacci

@@ -1,0 +1,64 @@
+#!/bin/bash
+
+#Initializing the numbers array to use numbers in operations
+NUMBERS=()
+
+#Start of the use of getopts to parse input to use options in the script
+while getopts ":o:n:dh" opt; do #Options o and n requires arguments, d and h dont
+	case $opt in
+		n)
+		#This creates an array from every number provided to the -n argument to store them
+		IFS=',' read -ra ARRAY <<< "${OPTARG}"
+		for num in ${ARRAY[@]}; do	
+      			NUMBERS+=("${num}")
+		done
+		;;
+		o)
+		#Initializes a variable from the operator provider as argument of -o
+		OPERATOR=$OPTARG
+		;;
+		d)
+		#Verbose output if option -d is provided
+		echo "User is: $(whoami)"
+		echo "Script name is: $0"
+		echo "Operation is: $OPERATOR"
+		echo "Numbers are: ${NUMBERS[*]}"
+		;;
+		h)
+		#Script usage if option -h is provided
+		echo "USAGE:"
+		echo "Option o for desired operation (Wheter is +, -, x, or %)"
+		echo "Option n for numbers. They must be encased in quotes"
+		echo "Option d for display additional info"
+		echo 'Example usage: ./<scriptname> -o + -n "2 3 4" -d'
+		;;
+		\?)
+		echo "Invalid option -$OPTARG"
+	esac
+done
+
+#Case block to perform operations depending on the operator provided
+#All cases use bc to calculate.
+#The bc programs works with n+n/n-n structure for instance and what the IFS will do is separate numbers within the array and join them by the IFS defined. 
+#Like for an array (2 3 4) and a IFS="+" the result will be 2+3+4. This is what is provided to the bc program
+case $OPERATOR in
+	+)
+	RESULT=$(IFS="+";bc<<<"${NUMBERS[*]}")
+	echo "Result is: $RESULT"
+	;;
+	-)
+	RESULT=$(IFS="-";bc<<<"${NUMBERS[*]}")
+	echo "Result is: $RESULT"
+	;;
+	x|X) #There was a conflict as the * is used as a wildcard for anything else that doesnt match the cases. So I used instead a x/X operator
+	RESULT=$(IFS="*";bc<<<"${NUMBERS[*]}")
+	echo "Result is: $RESULT"
+	;;
+	%)
+	RESULT=$(IFS="%";bc<<<"${NUMBERS[*]}")
+	echo "Result is: $RESULT"
+	;;
+	*)
+	echo "Invalid operator: $OPERATOR"
+	;;
+esac

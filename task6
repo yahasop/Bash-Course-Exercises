@@ -1,0 +1,24 @@
+#!/bin/bash
+
+#A script that generates a report file
+#All lines the script uses command substitution to manipulate stdout of commands with strings
+
+#We define a function to write its execution to the report file
+function my_func() {
+
+	echo "REPORT FILE"
+	echo ""
+	echo "Current date is: $(date +"%b/%d/%Y")" #This uses a formatted date command
+	echo "Current user is: $(whoami)" #A simple whoami command
+	echo "Current host is \"$(hostname)\" and its internal IP is: $(hostname -i)" #Hostname command to fetch name and internal IP
+	echo "Current host external IP is: $(curl -s -4 ifconfig.me)" #A curl command to a webpage with a silent option to supress progress bar and any other stdout and a flag to output the IP in IPv4 format. 
+	echo "Current name and version of this Linux distribution is: $(grep PRETTY /etc/os-release | awk -F '=' '{print $NF}' | tr -d '"')" #From the os-release file we grep PRETTY, from PRETTY_NAME. We use awk to set a IFS of an equal sign to divide the output in 2 elements and then we print the last with NF.Then we use translate command to delete any double quotes from the output of awk
+	echo "This server uptime status is: $(uptime -p)" #A simple uptime command with a -p flag for pretty format
+	#In the next ones basically its awk again using blank spaces as IFS and then manipulate the returned blocks (using positions as it returns a list of the elements separated by the IFS)
+	echo "Total space in / directory is: $(df / -h | tail -1 | awk -F ' ' '{print $2}') and available is: $(df / -h | tail -1 | awk -F ' ' '{print $4}')"
+	echo "Total RAM is: $(free -h | head -2 | tail -1 | awk -F ' ' '{print $2}') and available is: $(free -h | head -2 | tail -1 | awk -F ' ' '{print $4}')"
+	echo "Number of CPUs is: $(lscpu | grep -m 1 "CPU(s)" | awk -F ' ' '{print $NF}') with a frequency of: $(lscpu | grep "Hz" | awk -F ' ' '{print $NF}')MHz"
+
+}
+
+my_func > report.txt

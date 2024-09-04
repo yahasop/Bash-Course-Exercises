@@ -1,0 +1,51 @@
+#!/bin/bash
+
+#This is an alternative of the task 5 where instead of receiving a file, receives a string at runtime
+
+OPTIONS=":v:s:r:l:u:h"
+
+while getopts "$OPTIONS" opt; do
+	#This separates the string into an array if more than one word is provided
+  	IFS=' ' read -r -a SARGS <<< "$OPTARG"
+  	case $opt in
+    	v)
+      		echo "${SARGS[@]}" | tr "a-zA-Z" "A-Za-z"
+      		;;
+    	s)
+      		read -p "Enter pattern A: " A
+      		read -p "Enter pattern B: " B
+      		#echo "${SARGS[@]}" | sed "s/$A/$B/g"
+		echo "${SARGS[@]/$A/$B}" #Optional method to sed
+      		;;
+    	r)
+      		echo "${SARGS[@]}" | rev
+      		;;
+    	l)
+		#echo "${SARGS[@],,}"
+	      	echo "${OPTARG}" | tr "[:upper:]" "[:lower:]" #Optional method to parameter expansion using tr
+      		;;
+    	u)
+      		#echo "${SARGS[@]^^}"
+      		echo "${OPTARG}" | tr "[:lower:]" "[:upper:]" #Optional method to parameter expansion using tr
+      		;;
+    	h)
+      		cat <<EOF
+USAGE:
+  ./scriptname [OPTION] [ARGUMENT]
+  For instance:
+  ./scriptname -v "The quick brown fox jumps over the lazy dog"
+
+OPTIONS:
+  v - to replace lowercase characters to uppercase and viceversa
+  s - to search and replace a pattern
+  r - to reverse text
+  l - to lowercase all characters
+  u - to uppercase all characters
+EOF
+		;;
+	?)
+		echo "Invalid option: -$OPTARG"
+		exit 1
+      		;;
+  esac
+done

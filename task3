@@ -1,0 +1,18 @@
+#!/bin/bash
+
+#A for loop that iterates over a 100 elements list
+for i in {1..100}; do
+	#The logic is to print all numbers. But if module of a number is:
+	# - 5 and 3, prints FizzBuzz instead the number
+	# - 3 prints Fizz
+	# - 5 prints Buzz
+	if [ $((i % 5)) -eq 0 ] && [ $((i % 3)) -eq 0 ]; then
+		echo "FizzBuzz"
+        elif [ $((i % 3)) -eq 0 ]; then
+                echo "Fizz"
+        elif [ $((i % 5)) -eq 0 ]; then
+                echo "Buzz"
+	else
+		echo $i
+	fi
+done

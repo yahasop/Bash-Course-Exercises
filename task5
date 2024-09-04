@@ -1,0 +1,79 @@
+#!/bin/bash
+
+# Script to perform actions on files. Usage is described with flag -h
+
+#Initialization of variables to be used later
+OUTPUT_FILE=""
+RESULT=""
+
+#The getopts parser usally comes with a while conditional loop and a case statement
+while getopts ":i:o:h" opt; do #We provide the options to be used in the string
+	case $opt in
+		i)
+			if [[ -f $OPTARG ]]; then #Reads if the provided file exists
+				IFS=$'\n' read -d '' -r -a SARGS < "$OPTARG" #If it does exists, this line saves the lines of the file into SARGS variable
+			else
+				echo "File not found: $OPTARG"
+				exit 1 #Exit if the file doesnt exists
+			fi
+			
+			case $3 in #Strictly we have to provide the options as third argument for this block to work
+				-v)
+					#For loop to print and save into result all lines of SARGS. 
+					#Use of tr command to translate all lowercases into upper and viceversa
+					#Basically we are encasing in quotes all of the available alphabet letter upper and lower
+					RESULT=$(for element in "${SARGS[@]}"; do echo "$element" | tr "a-zA-Z" "A-Za-z"; done)
+					;;
+				-s)
+					#Read two patterns, and then reads all the lines. Search and replaces the patterns with sed 
+					read -p "Enter pattern to search and be replaced: " A
+					read -p "Enter pattern to replace the first one: " B
+					RESULT=$(for element in "${SARGS[@]}"; do echo "$element" | sed "s/$A/$B/g"; done)
+					;;
+				-r)
+					#This simply uses the rev command to reverse the text
+					RESULT=$(for element in "${SARGS[@]}"; do echo "$element" | rev; done)
+					;;
+				-l)
+					#Reads all the lines and lowercase all characters using parameter expansion and modifying it with ",,"
+					RESULT=$(for element in "${SARGS[@]}"; do echo "${element,,}"; done)
+					;;
+				-u)
+					#Reads all the lines and uppercase all characters using parameter expansion and modifying it with "^^"
+					RESULT=$(for element in "${SARGS[@]}"; do echo "${element^^}"; done)
+					;;
+
+			esac
+			;;
+		o)
+			#Option O saves the argument provided (OPTARG) to OUTPUT_FILE variable
+			OUTPUT_FILE="$OPTARG"
+			;;
+
+		h)
+			#This is a simple use of a Here Document to display script usage and information if the -h option is selected
+			cat <<EOF
+
+USAGE:
+  ./scriptname -i [INPUTFILE] [OPTIONS] -o [OUTPUTFILE]
+  For instance:
+  ./scriptname -i filename -v -o anotherfilename
+  ./scriptname -h (to display this help)
+
+OPTIONS:
+  v - to replace lowercase characters with uppercase and vice versa
+  s - to search and replace a pattern
+  r - to reverse text
+  l - to lowercase all characters
+  u - to uppercase all characters
+EOF
+
+	esac
+	
+	#This checks if RESULT and OUTPUT_FILE are non-empty and if so, redirects $RESULT to $OUTPUT_FILE
+	if [ -n "$RESULT" ]; then
+		if [ -n "$OUTPUT_FILE" ]; then
+			echo "$RESULT" > "$OUTPUT_FILE"
+		fi
+	fi
+done
